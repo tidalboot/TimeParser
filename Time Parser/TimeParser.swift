@@ -73,7 +73,7 @@ extension NSDate {
         case 290304001...2903040000:
             parsedDate = "\(Int(dateIntervalToParse / 290304000)) decade ago"
         case 2903040001...29030400000:
-            parsedDate = "A decade ago"
+            parsedDate = "Over a century ago"
         default:
             return "Just now"
         }
