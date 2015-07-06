@@ -1,3 +1,12 @@
+//
+//  File.swift
+//  FoodForMort
+//
+//  Created by Ryan Cosans on 06/07/2015.
+//  Copyright (c) 2015 Peinto. All rights reserved.
+//
+
+import Foundation
 //TimeParser
 
 import Foundation
@@ -53,45 +62,43 @@ extension NSDate {
         
         let timeSince1970 = localTimeSince1970 - Double((NSTimeZone.localTimeZone().secondsFromGMTForDate(NSDate()) - (3600 * timeZoneOfDate.rawValue)))
         
-        let dateIntervalToParse = round(NSTimeInterval(timeSince1970))
-        var parsedDate = ""
-        switch dateIntervalToParse {
-        case 0...60:
-            parsedDate = "\(Int(dateIntervalToParse)) second ago"
-        case 61...3600:
-            parsedDate = "\(Int(dateIntervalToParse / 60)) minute ago"
-        case 361...86400:
-            parsedDate = "\(Int(dateIntervalToParse / 3600)) hour ago"
-        case 86401...604800:
-            parsedDate = "\(Int(dateIntervalToParse / 86400)) day ago"
-        case 604801...2419200:
-            parsedDate = "\(Int(dateIntervalToParse / 604800)) week ago"
-        case 2419201...29030400:
-            parsedDate = "\(Int(dateIntervalToParse / 2419200)) month ago"
-        case 29030401...290304000:
-            parsedDate = "\(Int(dateIntervalToParse / 29030400)) year ago"
-        case 290304001...2903040000:
-            parsedDate = "\(Int(dateIntervalToParse / 290304000)) decade ago"
-        case 2903040001...29030400000:
-            parsedDate = "Over a century ago"
-        default:
-            return "Just now"
+        let dateIntervalToParse = Int(round(NSTimeInterval(timeSince1970)))
+        
+        func selectPrettyDate(dateIntervalToParse: Int) -> (String, Int) {
+            switch dateIntervalToParse {
+            case 0...60:
+                return ("\(dateIntervalToParse) second", dateIntervalToParse)
+            case 61...3600:
+                return ("\(Int(dateIntervalToParse / 60)) minute", Int(dateIntervalToParse / 60))
+            case 361...86400:
+                return ("\(Int(dateIntervalToParse / 3600)) hour", Int(dateIntervalToParse / 3600))
+            case 86401...604800:
+                return ("\(Int(dateIntervalToParse / 86400)) day", Int(dateIntervalToParse / 86400))
+            case 604801...2419200:
+                return ("\(Int(dateIntervalToParse / 604800)) week", Int(dateIntervalToParse / 604800))
+            case 2419201...29030400:
+                return ("\(Int(dateIntervalToParse / 2419200)) month", Int(dateIntervalToParse / 2419200))
+            case 29030401...290304000:
+                return ("\(Int(dateIntervalToParse / 29030400)) year", Int(dateIntervalToParse / 29030400))
+            default:
+                return ("Just now", 0)
+            }
         }
         
-        //Adds an 's' to the end of the tidied string if a plural is needed
-        let whiteSpace = NSCharacterSet.whitespaceCharacterSet()
-        let charactersUntilEndOfInts = parsedDate.rangeOfCharacterFromSet(whiteSpace)?.endIndex.predecessor()
-        let numberOfMeasurements = parsedDate.substringToIndex(charactersUntilEndOfInts!).toInt()
+        var prettyDateInfo = selectPrettyDate(dateIntervalToParse)
         
-        if numberOfMeasurements != 1 {
-            let newParsed: NSMutableString = NSMutableString(string: parsedDate)
-            let fooplace = newParsed.length - 4
-            newParsed.insertString("s", atIndex: fooplace)
-            parsedDate = newParsed as String
+        if(prettyDateInfo.1 == 0) {return prettyDateInfo.0}
+        
+        if(prettyDateInfo.1 != 1 && prettyDateInfo.1 != -1) {
+            prettyDateInfo.0 += "s"
         }
-        return parsedDate
+        
+        prettyDateInfo.0 += " ago"
+        
+        return prettyDateInfo.0
     }
+    
 }
 
 
-//--------------End of line
+//--------------End of line\
