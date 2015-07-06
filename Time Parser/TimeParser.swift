@@ -53,45 +53,36 @@ extension NSDate {
         
         let timeSince1970 = localTimeSince1970 - Double((NSTimeZone.localTimeZone().secondsFromGMTForDate(NSDate()) - (3600 * timeZoneOfDate.rawValue)))
         
-        let dateIntervalToParse = round(NSTimeInterval(timeSince1970))
+        let dateIntervalToParse = Int(round(NSTimeInterval(timeSince1970)))
         var parsedDate = ""
         switch dateIntervalToParse {
         case 0...60:
-            parsedDate = "\(Int(dateIntervalToParse)) second ago"
+            parsedDate = "\(Int(dateIntervalToParse)) second"
         case 61...3600:
-            parsedDate = "\(Int(dateIntervalToParse / 60)) minute ago"
+            parsedDate = "\(Int(dateIntervalToParse / 60)) minute"
         case 361...86400:
-            parsedDate = "\(Int(dateIntervalToParse / 3600)) hour ago"
+            parsedDate = "\(Int(dateIntervalToParse / 3600)) hour"
         case 86401...604800:
-            parsedDate = "\(Int(dateIntervalToParse / 86400)) day ago"
+            parsedDate = "\(Int(dateIntervalToParse / 86400)) day"
         case 604801...2419200:
-            parsedDate = "\(Int(dateIntervalToParse / 604800)) week ago"
+            parsedDate = "\(Int(dateIntervalToParse / 604800)) week"
         case 2419201...29030400:
-            parsedDate = "\(Int(dateIntervalToParse / 2419200)) month ago"
+            parsedDate = "\(Int(dateIntervalToParse / 2419200)) month"
         case 29030401...290304000:
-            parsedDate = "\(Int(dateIntervalToParse / 29030400)) year ago"
+            parsedDate = "\(Int(dateIntervalToParse / 29030400)) year"
         case 290304001...2903040000:
-            parsedDate = "\(Int(dateIntervalToParse / 290304000)) decade ago"
+            parsedDate = "\(Int(dateIntervalToParse / 290304000)) decade"
         case 2903040001...29030400000:
             parsedDate = "Over a century ago"
         default:
             return "Just now"
         }
         
-        //Adds an 's' to the end of the tidied string if a plural is needed
-        let whiteSpace = NSCharacterSet.whitespaceCharacterSet()
-        let charactersUntilEndOfInts = parsedDate.rangeOfCharacterFromSet(whiteSpace)?.endIndex.predecessor()
-        let numberOfMeasurements = parsedDate.substringToIndex(charactersUntilEndOfInts!).toInt()
-        
-        if numberOfMeasurements != 1 {
-            let newParsed: NSMutableString = NSMutableString(string: parsedDate)
-            let fooplace = newParsed.length - 4
-            newParsed.insertString("s", atIndex: fooplace)
-            parsedDate = newParsed as String
+        if(dateIntervalToParse != 1) {
+            parsedDate += "s"
         }
+        parsedDate += " ago"
+        
         return parsedDate
     }
 }
-
-
-//--------------End of line
