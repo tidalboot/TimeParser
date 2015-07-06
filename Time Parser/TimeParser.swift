@@ -1,12 +1,3 @@
-//
-//  File.swift
-//  FoodForMort
-//
-//  Created by Ryan Cosans on 06/07/2015.
-//  Copyright (c) 2015 Peinto. All rights reserved.
-//
-
-import Foundation
 //TimeParser
 
 import Foundation
